@@ -1,5 +1,3 @@
-"use client"
-
 import type React from "react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
@@ -34,7 +32,7 @@ export default function Signin() {
     navigate("/") 
   }
 
-  const loginuser=async (formData)=>{
+  const loginuser=async (formData: { email: string; password: string })=>{
     try{
         const response=await axios.post(`${apiUrl}/api/admin/signin`,
             formData, 
@@ -44,6 +42,7 @@ export default function Signin() {
         }
         return response.data.token
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     }catch(err){
         console.log("error in logging in")
     }

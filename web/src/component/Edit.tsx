@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useProduct } from "../context/ProductContext";
@@ -18,22 +16,25 @@ export default function EditProductCard() {
     rating: "",
   });
 
-  const { updateProduct, getProductById } = useProduct(); 
+  const { updateProduct} = useProduct(); 
 
   const handleCancel = () => {
     navigate("/"); 
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
 
     try {
       console.log("Updated product data:", editedProduct); 
-      const response = await updateProduct(id, editedProduct);
+     await updateProduct(id, editedProduct);
 
       
-        console.log("Product updated successfully");
-        navigate("/"); 
+     
+            console.log("Product updated successfully");
+
+            navigate("/"); 
+        
       
     } catch (error) {
       console.error("Error updating product:", error);
@@ -41,7 +42,7 @@ export default function EditProductCard() {
   };
 
   
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: { target: { name: string; value: string; }; }) => {
     const { name, value } = e.target;
     setEditedProduct((prev) => ({
       ...prev,

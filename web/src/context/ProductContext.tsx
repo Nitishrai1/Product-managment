@@ -66,13 +66,13 @@ export const ProductProvider = ({ children }) => {
   const getProductById=async (id:string)=>{
     try{
 
-      const product=await axios.get(`${apiUrl}/api/product/:id`);
+      const product=await axios.get(`${apiUrl}/api/product/:${id}`);
       const productdata=product.data;
       return productdata;
      
     }catch(err){
 
-      console.log("error in getting the product data");
+      console.log("error in getting the product data",err);
     }
   }
 

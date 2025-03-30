@@ -1,9 +1,6 @@
-"use client"
-
 import type React from "react"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { useAuth } from "../context/AuthContext"
 import axios from "axios"
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -29,7 +26,7 @@ export default function Signup() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
    
-    const response=signup(formData);
+    const response= await signup(formData);
     console.log("User data:", formData)
     if(response){
 
@@ -37,13 +34,14 @@ export default function Signup() {
     }
   }
 
-   const signup=async(formData)=>{
+   const signup=async(formData: { firstName: string; middleName: string; lastName: string; email: string; password: string; })=>{
     try{
         const response=await axios.post(`${apiUrl}/api/admin/signup`,formData);
         const data=response.data;
         console.log(data);
         return data;
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     }catch(err){
         console.log("error in signup")
 

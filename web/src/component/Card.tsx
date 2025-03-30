@@ -1,8 +1,5 @@
-"use client"
-
 import { Star } from "lucide-react"
 import { useProduct } from "../context/ProductContext"
-
 export default function ProductCard({ product, onEdit }) {
   const {
     product_id,
@@ -43,7 +40,7 @@ export default function ProductCard({ product, onEdit }) {
   }
   const removeProduct=async()=>{
 
-    const response=await deleteProduct(product_id);
+    await deleteProduct(product_id);
     console.log("product removed");
     
 

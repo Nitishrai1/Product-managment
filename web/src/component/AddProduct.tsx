@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState,  } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProduct } from "../context/ProductContext";
 
@@ -20,12 +20,12 @@ export default function AddProduct() {
     navigate("/");
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
 
     try {
       console.log("added product data:", product); 
-      const response = await addProduct(product);
+       await addProduct(product);
 
       
         console.log("Product updated successfully");
