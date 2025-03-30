@@ -40,8 +40,21 @@ const express_1 = __importDefault(require("express"));
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 const cors_1 = __importDefault(require("cors"));
+const admin_1 = require("./routes/admin");
+const express_rate_limit_1 = require("express-rate-limit");
+const product_1 = require("./routes/product");
 const app = (0, express_1.default)();
+const limit = (0, express_rate_limit_1.rateLimit)({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    standardHeaders: 'draft-8',
+    legacyHeaders: false,
+});
+app.use(limit); // this middlewaire put limit to all the route for 100 req in 15 min
 app.use((0, cors_1.default)());
+app.use(express_1.default.json());
+app.use("/api/admin", admin_1.adminRouter);
+app.use("/api/product", product_1.productRouter);
 const PORT = process.env.PORT || 5000;
 console.log(PORT);
 app.listen(PORT, () => {

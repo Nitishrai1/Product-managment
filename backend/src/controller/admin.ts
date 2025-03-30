@@ -1,7 +1,7 @@
 import {prisma} from "../prisma/index"
 import jwt from "jsonwebtoken"
 import {LoginInfo, UserInfo} from "../utils/validateInput"
-const JWT_SECRET=process.env.JWT_SECRET ;
+const JWT_SECRET=process.env.JWT_SECRET || "" ;
 
 
 export const SignupAdmin=async(req:any,res:any)=>{

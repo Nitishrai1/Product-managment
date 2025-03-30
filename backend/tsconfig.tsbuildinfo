@@ -1,1 +1,1 @@
-{"root":["./src/index.ts"],"version":"5.8.2"}
+{"root":["./src/index.ts","./src/controller/admin.ts","./src/controller/product.ts","./src/controller/user.ts","./src/middleware/auth.ts","./src/prisma/index.ts","./src/routes/admin.ts","./src/routes/product.ts","./src/routes/user.ts","./src/utils/validateinput.ts"],"version":"5.8.2"}

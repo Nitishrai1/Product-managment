@@ -3,13 +3,13 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import cors from "cors"
 import {adminRouter} from "./routes/admin";
-const {ratelimit}=require("express-rate-limit")
+import {rateLimit} from "express-rate-limit"
 
 import {productRouter} from "./routes/product"
 
 
 const app=express();
-const limit=ratelimit({
+const limit=rateLimit({
     windowMs: 15 * 60 * 1000,
 	max: 100,
 	standardHeaders: 'draft-8', 
