@@ -8,7 +8,7 @@ import axios from "axios"
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 export default function Signup() {
-  const { login } = useAuth()
+  
   const [formData, setFormData] = useState({
     firstName: "",
     middleName: "",

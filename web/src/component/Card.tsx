@@ -1,6 +1,6 @@
 "use client"
 
-import { AwardIcon, Star } from "lucide-react"
+import { Star } from "lucide-react"
 import { useProduct } from "../context/ProductContext"
 
 export default function ProductCard({ product, onEdit }) {

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useProduct } from "../context/ProductContext";
 
 export default function AddProduct() {
@@ -16,9 +16,6 @@ export default function AddProduct() {
 
   })
   const {addProduct}=useProduct();
-
-  
-
   const handleCancel = () => {
     navigate("/");
   };
@@ -39,7 +36,7 @@ export default function AddProduct() {
     }
   };
 
-  // Function to handle input field updates
+ 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setProduct((prev) => ({
