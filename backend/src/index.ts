@@ -20,6 +20,8 @@ const limit=rateLimit({
 app.use(limit); // this middlewaire put limit to all the route for 100 req in 15 min
 
 
+
+
 app.use(cors());
 app.use(express.json());
 
