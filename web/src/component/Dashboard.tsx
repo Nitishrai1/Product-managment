@@ -42,7 +42,7 @@ export function Dashboard() {
     const fetchFilteredProducts = async () => {
       try {
         const searchQueryParam = debouncedSearchQuery || ""; // Handle empty search query
-        const response = await axios.get(`${apiUrl}/api/product/search?search=${searchQueryParam}&category=${categoryFilter}&minPrice=${minPrice}&maxPrice=${maxPrice}&rating=${ratingFilter}`);
+        const response = await axios.get(`${apiUrl}/api/product/search?search=${searchQueryParam}`);
 
         if (response.data.products) {
           setFilteredProduct(response.data.products);

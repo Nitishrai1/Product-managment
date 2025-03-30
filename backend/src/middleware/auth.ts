@@ -26,6 +26,6 @@ export const Auth = (req: CustomRequest, res: Response, next: NextFunction) => {
 
         next();
     } catch (err) {
-        res.status(401).json({ msg: "Invalid or expired token" });
+        res.status(401).json({ msg: "Invalid or expired token",err });
     }
 };

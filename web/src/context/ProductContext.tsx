@@ -4,6 +4,7 @@ import axios from "axios";
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
+
 // Define types for the product data
 export interface Product {
   id: string;
@@ -53,6 +54,7 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
   const fetchProduct = async () => {
     try {
       const res = await axios.get(`${apiUrl}/api/product/allproducts`);
+      console.log(res.data.product)
       setProduct(res.data.product); // Assume `product` is the data array
     } catch (err) {
       console.error("Error fetching products:", err);
@@ -75,6 +77,8 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
 
   const addProduct = async (productData: NewProduct) => {
     try {
+      console.log("inside the add product route");
+      console.log("product is" ,JSON.stringify(productData))
       await axios.post(
         `${apiUrl}/api/product/addProduct`,
         productData,
