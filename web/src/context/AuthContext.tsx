@@ -1,6 +1,5 @@
 import { createContext, useState, useContext, ReactNode } from "react";
 
-// Define the type for the context
 interface AuthContextType {
   isAuthenticated: boolean;
   token: string | null;
@@ -8,15 +7,12 @@ interface AuthContextType {
   logout: () => void;
 }
 
-// Create the AuthContext with undefined as the default value
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Define the type for the props of the AuthProvider
 interface AuthProviderProps {
   children: ReactNode;
 }
 
-// AuthProvider component
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!token);
@@ -40,11 +36,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   );
 };
 
-// Custom hook to use the AuthContext
 export const useAuth = (): AuthContextType => {
   const context = useContext(AuthContext);
   
-  // Throw an error if the hook is used outside the provider
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }

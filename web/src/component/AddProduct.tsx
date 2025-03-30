@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProduct } from "../context/ProductContext";
-import { ChangeEvent, FormEvent } from "react"; // Import React types
+import { ChangeEvent, FormEvent } from "react";
 
 export default function AddProduct() {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ export default function AddProduct() {
     navigate("/");
   };
 
-  const handleSubmit = async (e: FormEvent) => { // Use FormEvent for form submission
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
     try {
@@ -32,7 +32,7 @@ export default function AddProduct() {
     }
   };
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => { // Use ChangeEvent for input and textarea
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => { 
     const { name, value } = e.target;
     setProduct((prev) => ({
       ...prev,

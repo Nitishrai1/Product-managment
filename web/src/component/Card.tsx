@@ -12,7 +12,6 @@ interface Product {
   createdAt: string
 }
 
-// Define the props for the ProductCard component
 interface ProductCardProps {
   product: Product
   onEdit?: (productId: string | number) => void

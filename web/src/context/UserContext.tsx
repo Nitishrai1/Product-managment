@@ -21,7 +21,6 @@ const apiUrl = import.meta.env.VITE_BACKEND_URL; // Ensure apiUrl is defined cor
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-// Define the type for the UserProvider props
 interface UserProviderProps {
   children: ReactNode;
 }
@@ -45,7 +44,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
 
       const response = await axios.get(`${apiUrl}/api/admin/profile`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Sending token in the headers if needed
+          Authorization: `Bearer ${token}`, 
         },
       });
 
@@ -56,7 +55,7 @@ export const UserProvider = ({ children }: UserProviderProps) => {
           lastName: data.lastName || "",
           middleName: data.middleName || "",
           email: data.email || "",
-          password: data.password || "", // Consider removing password from state
+          password: data.password || "", 
         });
       }
     } catch (err) {
@@ -77,7 +76,6 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   );
 };
 
-// Custom hook to use the UserContext
 export const useUser = (): UserContextType => {
   const context = useContext(UserContext);
   if (!context) {

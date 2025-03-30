@@ -4,7 +4,6 @@ import axios from "axios";
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
-// Define types for the product data
 export interface Product {
   product_id: string;
   productName: string;
@@ -41,7 +40,6 @@ interface ProductContextType {
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
-// Define the type for the AuthProvider children
 interface ProductProviderProps {
   children: ReactNode;
 }
@@ -67,10 +65,10 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
   const getProductById = async (id: string): Promise<Product | null> => {
     try {
       const res = await axios.get(`${apiUrl}/api/product/${id}`);
-      return res.data || null; // Assuming product data is returned
+      return res.data || null; 
     } catch (err) {
       console.error("Error fetching product by ID:", err);
-      return null; // Return null in case of an error
+      return null;
     }
   };
 
@@ -86,7 +84,7 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
           },
         }
       );
-      fetchProduct(); // Refetch products after adding
+      fetchProduct(); 
     } catch (err) {
       console.error("Error adding product:", err);
     }
@@ -105,7 +103,7 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
         }
       );
       if (response.status === 200) {
-        fetchProduct(); // Refetch products after update
+        fetchProduct(); 
       } else {
         alert("Error updating the product");
       }
@@ -122,7 +120,7 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
         },
       });
       if (response.status === 200) {
-        fetchProduct(); // Refetch products after deletion
+        fetchProduct(); 
       } else {
         alert("Error deleting the product");
       }

@@ -40,12 +40,11 @@ export function Dashboard() {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Fetch filtered products based on search query and filters
   useEffect(() => {
     const fetchFilteredProducts = async () => {
       try {
         
-        const searchQueryParam = debouncedSearchQuery || ""; // Handle empty search query
+        const searchQueryParam = debouncedSearchQuery || ""; 
         const response = await axios.get(
           `${apiUrl}/api/product/search?search=${searchQueryParam}`
         );
@@ -58,22 +57,19 @@ export function Dashboard() {
       }
     };
 
-    // Fetch products initially when page loads or on filters/search changes
     if (debouncedSearchQuery) {
       fetchFilteredProducts();
     } else {
-      setFilteredProduct(product); // Use the full product list if no filter is applied
+      setFilteredProduct(product); 
     }
   }, [debouncedSearchQuery]);
 
-  // Handle editing a product
   const handleEditProduct = (product_id: string) => {
     navigate("/EditProduct", {
       state: { id: product_id },
     });
   };
 
-  // Navigate to Add Product page
   const handleAddProduct = () => {
     navigate("/Addproduct");
   };
