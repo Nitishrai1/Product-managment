@@ -2,7 +2,6 @@ import { createContext, useState, useEffect, useContext, ReactNode } from "react
 import { useAuth } from "./AuthContext";
 import axios from "axios";
 
-// Define the structure of the user data
 interface UserData {
   firstName: string;
   lastName: string;
@@ -11,13 +10,12 @@ interface UserData {
   password: string;
 }
 
-// Define the structure of the UserContext
 interface UserContextType {
   userData: UserData;
   setUserData: React.Dispatch<React.SetStateAction<UserData>>;
 }
 
-const apiUrl = import.meta.env.VITE_BACKEND_URL; // Ensure apiUrl is defined correctly
+const apiUrl = import.meta.env.VITE_BACKEND_URL; 
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
