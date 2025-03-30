@@ -4,10 +4,9 @@ import axios from "axios";
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
-
 // Define types for the product data
 export interface Product {
-  id: string;
+  product_id: string;
   productName: string;
   price: string;
   description: string;
@@ -77,8 +76,6 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
 
   const addProduct = async (productData: NewProduct) => {
     try {
-      console.log("inside the add product route");
-      console.log("product is" ,JSON.stringify(productData))
       await axios.post(
         `${apiUrl}/api/product/addProduct`,
         productData,

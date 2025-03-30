@@ -3,23 +3,24 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import ProductCard from "./Card";
 import axios from "axios";
+import { useProduct } from "../context/ProductContext";
 
 // Define types for Product
 interface Product {
-  product_id: string ;
+  product_id: string;
   productName: string;
   description: string;
   category: string;
-  price: number;
-  rating: number;
-  createdAt: string;
+  price: string;
+  rating: string;
 }
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 export function Dashboard() {
   const { logout } = useAuth();
-  const [filteredProduct, setFilteredProduct] = useState<Product[]>([]); // Add type here
+  const { product } = useProduct(); // Fetch all products from context
+  const [filteredProduct, setFilteredProduct] = useState<Product[]>(product); // Initialize with all products
   const [categoryFilter, setCategoryFilter] = useState<string>("");
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(1000);
@@ -27,6 +28,8 @@ export function Dashboard() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>("");
   const navigate = useNavigate();
+  
+
 
   // Debounce search query to optimize the API call
   useEffect(() => {
@@ -41,8 +44,11 @@ export function Dashboard() {
   useEffect(() => {
     const fetchFilteredProducts = async () => {
       try {
+        
         const searchQueryParam = debouncedSearchQuery || ""; // Handle empty search query
-        const response = await axios.get(`${apiUrl}/api/product/search?search=${searchQueryParam}`);
+        const response = await axios.get(
+          `${apiUrl}/api/product/search?search=${searchQueryParam}`
+        );
 
         if (response.data.products) {
           setFilteredProduct(response.data.products);
@@ -52,11 +58,16 @@ export function Dashboard() {
       }
     };
 
-    fetchFilteredProducts();
-  }, [debouncedSearchQuery, categoryFilter, minPrice, maxPrice, ratingFilter]);
+    // Fetch products initially when page loads or on filters/search changes
+    if (debouncedSearchQuery) {
+      fetchFilteredProducts();
+    } else {
+      setFilteredProduct(product); // Use the full product list if no filter is applied
+    }
+  }, [debouncedSearchQuery]);
 
   // Handle editing a product
-  const handleEditProduct = (product_id: string | number) => {
+  const handleEditProduct = (product_id: string) => {
     navigate("/EditProduct", {
       state: { id: product_id },
     });

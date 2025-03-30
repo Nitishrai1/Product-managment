@@ -36,6 +36,7 @@ export default function Signup() {
 
    const signup=async(formData: { firstName: string; middleName: string; lastName: string; email: string; password: string; })=>{
     try{
+        console.log(`formData ${formData}`);
         const response=await axios.post(`${apiUrl}/api/admin/signup`,formData);
         const data=response.data;
         console.log(data);
