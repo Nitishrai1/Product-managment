@@ -7,7 +7,7 @@ import { useAuth } from "../context/AuthContext"
 import axios from "axios"
 
 export default function Signin() {
-  const { login } = useAuth() // Use the login function from context
+  const { login } = useAuth() 
   const [formData, setFormData] = useState<{ email: string; password: string }>({
     email: "",
     password: "",

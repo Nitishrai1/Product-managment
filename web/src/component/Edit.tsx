@@ -6,11 +6,10 @@ import { useProduct } from "../context/ProductContext";
 
 export default function EditProductCard() {
   const location = useLocation();
-  const { id } = location.state || {}; // Ensure id is passed correctly from the navigation
-
+  const { id } = location.state || {}; 
   const navigate = useNavigate();
   
-  // Set default form values with blank values
+ 
   const [editedProduct, setEditedProduct] = useState({
     productName: "",
     description: "",
@@ -19,18 +18,18 @@ export default function EditProductCard() {
     rating: "",
   });
 
-  const { updateProduct, getProductById } = useProduct(); // Get updateProduct and getProductById functions
+  const { updateProduct, getProductById } = useProduct(); 
 
   const handleCancel = () => {
-    navigate("/"); // Navigate to the home page or wherever you'd like
+    navigate("/"); 
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      console.log("Updated product data:", editedProduct); // Debugging log to verify the data
-      const response = await updateProduct(id, editedProduct); // Call the update function from context
+      console.log("Updated product data:", editedProduct); 
+      const response = await updateProduct(id, editedProduct);
 
       
         console.log("Product updated successfully");
@@ -41,12 +40,12 @@ export default function EditProductCard() {
     }
   };
 
-  // Function to handle input field updates
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setEditedProduct((prev) => ({
       ...prev,
-      [name]: value, // Dynamically update the form value
+      [name]: value, 
     }));
   };
 
