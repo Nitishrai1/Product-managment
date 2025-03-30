@@ -74,7 +74,7 @@ export default function EditProductCard() {
               name="description"
               value={editedProduct.description}
               onChange={handleInputChange}
-              rows="3"
+              
               className="w-full p-2 border rounded-lg"
               placeholder="Enter product description"
             ></textarea>

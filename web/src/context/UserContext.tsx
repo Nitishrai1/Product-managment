@@ -1,8 +1,8 @@
-import { createContext, useState, useEffect,  useContext } from "react";
+import { createContext, useState, useEffect, useContext, ReactNode } from "react";
 import { useAuth } from "./AuthContext";
 import axios from "axios";
 
-
+// Define the structure of the user data
 interface UserData {
   firstName: string;
   lastName: string;
@@ -11,19 +11,23 @@ interface UserData {
   password: string;
 }
 
-
+// Define the structure of the UserContext
 interface UserContextType {
   userData: UserData;
   setUserData: React.Dispatch<React.SetStateAction<UserData>>;
 }
 
+const apiUrl = import.meta.env.VITE_BACKEND_URL; // Ensure apiUrl is defined correctly
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
+// Define the type for the UserProvider props
+interface UserProviderProps {
+  children: ReactNode;
+}
 
-
-export const UserProvider = ({ children }) => {
-  const { token } = useAuth(); 
+export const UserProvider = ({ children }: UserProviderProps) => {
+  const { token } = useAuth();
   const [userData, setUserData] = useState<UserData>({
     firstName: "",
     lastName: "",
@@ -34,11 +38,17 @@ export const UserProvider = ({ children }) => {
 
   const fetchUserData = async () => {
     try {
+      if (!token) {
+        console.log("No token found");
+        return;
+      }
+
       const response = await axios.get(`${apiUrl}/api/admin/profile`, {
         headers: {
           Authorization: `Bearer ${token}`, // Sending token in the headers if needed
         },
       });
+
       const data = response.data;
       if (data) {
         setUserData({
@@ -46,7 +56,7 @@ export const UserProvider = ({ children }) => {
           lastName: data.lastName || "",
           middleName: data.middleName || "",
           email: data.email || "",
-          password: data.password || "",
+          password: data.password || "", // Consider removing password from state
         });
       }
     } catch (err) {

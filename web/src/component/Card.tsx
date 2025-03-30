@@ -1,6 +1,24 @@
 import { Star } from "lucide-react"
 import { useProduct } from "../context/ProductContext"
-export default function ProductCard({ product, onEdit }) {
+
+// Define types for the product prop
+interface Product {
+  product_id: string 
+  productName: string
+  description: string
+  category: string
+  price: number
+  rating: number
+  createdAt: string
+}
+
+// Define the props for the ProductCard component
+interface ProductCardProps {
+  product: Product
+  onEdit?: (productId: string | number) => void
+}
+
+export default function ProductCard({ product, onEdit }: ProductCardProps) {
   const {
     product_id,
     productName = "Untitled Product",
@@ -9,42 +27,47 @@ export default function ProductCard({ product, onEdit }) {
     price = 0,
     rating = 0,
     createdAt,
-    _
-  } = product || {}
+  } = product
 
-  const {deleteProduct}=useProduct();
+  const { deleteProduct } = useProduct()
 
-
+  // Format the date to a readable format
   const formattedDate = new Date(createdAt).toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
     day: "numeric",
   })
 
-  
+  // Render stars based on the rating
   const renderStars = () => {
     const stars = []
     for (let i = 0; i < 5; i++) {
       stars.push(
-        <Star key={i} className={`w-4 h-4 ${i < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`} />,
+        <Star
+          key={i}
+          className={`w-4 h-4 ${i < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`}
+        />
       )
     }
     return stars
   }
 
+  // Edit product handler
   const handleEdit = () => {
-    console.log(`product id in card ${product_id}`);
+    console.log(`product id in card ${product_id}`)
     if (onEdit) {
       onEdit(product_id)
     }
   }
-  const removeProduct=async()=>{
 
-    await deleteProduct(product_id);
-    console.log("product removed");
-    
-
-    
+  // Remove product handler
+  const removeProduct = async () => {
+    try {
+      deleteProduct(product_id)
+      console.log("product removed")
+    } catch (error) {
+      console.error("Error removing product:", error)
+    }
   }
 
   return (
@@ -73,11 +96,13 @@ export default function ProductCard({ product, onEdit }) {
         >
           Edit Product
         </button>
-        <button onClick={removeProduct} className="bg-blue-500 text-white py-2 px-4 rounded-3xl hover:bg-blue-600 transition">
-          remove
+        <button
+          onClick={removeProduct}
+          className="bg-blue-500 text-white py-2 px-4 rounded-3xl hover:bg-blue-600 transition"
+        >
+          Remove
         </button>
       </div>
     </div>
   )
 }
-

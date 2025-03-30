@@ -1,23 +1,34 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useProduct } from "../context/ProductContext";
 import ProductCard from "./Card";
 import axios from "axios";
+
+// Define types for Product
+interface Product {
+  product_id: string ;
+  productName: string;
+  description: string;
+  category: string;
+  price: number;
+  rating: number;
+  createdAt: string;
+}
+
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 export function Dashboard() {
-  const { product } = useProduct();
   const { logout } = useAuth();
-  const [filteredProduct, setFilteredProduct] = useState([]);
-  const [categoryFilter, setCategoryFilter] = useState("");
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(1000);
-  const [ratingFilter, setRatingFilter] = useState(0);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
+  const [filteredProduct, setFilteredProduct] = useState<Product[]>([]); // Add type here
+  const [categoryFilter, setCategoryFilter] = useState<string>("");
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(1000);
+  const [ratingFilter, setRatingFilter] = useState<number>(0);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>("");
   const navigate = useNavigate();
 
+  // Debounce search query to optimize the API call
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearchQuery(searchQuery);
@@ -26,12 +37,12 @@ export function Dashboard() {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
+  // Fetch filtered products based on search query and filters
   useEffect(() => {
     const fetchFilteredProducts = async () => {
       try {
-        const searchQueryParam = debouncedSearchQuery;
-        const response = await axios.get(`${apiUrl}/api/product/search?search=${searchQueryParam}`);
-        console.log(response);
+        const searchQueryParam = debouncedSearchQuery || ""; // Handle empty search query
+        const response = await axios.get(`${apiUrl}/api/product/search?search=${searchQueryParam}&category=${categoryFilter}&minPrice=${minPrice}&maxPrice=${maxPrice}&rating=${ratingFilter}`);
 
         if (response.data.products) {
           setFilteredProduct(response.data.products);
@@ -41,23 +52,22 @@ export function Dashboard() {
       }
     };
 
-    if (debouncedSearchQuery) {
-      fetchFilteredProducts();
-    } else {
-      setFilteredProduct(product);
-    }
-  }, [debouncedSearchQuery, categoryFilter, minPrice, maxPrice, ratingFilter, product]);
+    fetchFilteredProducts();
+  }, [debouncedSearchQuery, categoryFilter, minPrice, maxPrice, ratingFilter]);
 
-  const handleEditProduct = (product_id:string) => {
+  // Handle editing a product
+  const handleEditProduct = (product_id: string | number) => {
     navigate("/EditProduct", {
       state: { id: product_id },
     });
   };
 
+  // Navigate to Add Product page
   const handleAddProduct = () => {
     navigate("/Addproduct");
   };
 
+  // Handle logout
   const handleLogout = () => {
     logout();
   };
@@ -143,9 +153,7 @@ export function Dashboard() {
             />
           ))
         ) : (
-          <p className="col-span-3 text-center text-gray-500">
-            No products found
-          </p>
+          <p className="col-span-3 text-center text-gray-500">No products found</p>
         )}
       </div>
     </div>

@@ -1,47 +1,42 @@
-"use client";
-
-import { useState,  } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProduct } from "../context/ProductContext";
+import { ChangeEvent, FormEvent } from "react"; // Import React types
 
 export default function AddProduct() {
- 
   const navigate = useNavigate();
-  const [product,setProduct]=useState({
+  const [product, setProduct] = useState({
     productName: "",
     description: "",
     category: "",
     price: "",
     rating: "",
+  });
+  const { addProduct } = useProduct();
 
-  })
-  const {addProduct}=useProduct();
   const handleCancel = () => {
     navigate("/");
   };
 
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: FormEvent) => { // Use FormEvent for form submission
     e.preventDefault();
 
     try {
-      console.log("added product data:", product); 
-       await addProduct(product);
+      console.log("added product data:", product);
+      await addProduct(product);
 
-      
-        console.log("Product updated successfully");
-        navigate("/"); 
-      
+      console.log("Product updated successfully");
+      navigate("/");
     } catch (error) {
       console.error("Error updating product:", error);
     }
   };
 
- 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => { // Use ChangeEvent for input and textarea
     const { name, value } = e.target;
     setProduct((prev) => ({
       ...prev,
-      [name]: value, 
+      [name]: value,
     }));
   };
 
@@ -56,7 +51,7 @@ export default function AddProduct() {
             <input
               type="text"
               name="productName"
-              value={product.productName} 
+              value={product.productName}
               onChange={handleInputChange}
               className="w-full p-2 border rounded-lg"
               placeholder="Enter product name"
@@ -67,9 +62,8 @@ export default function AddProduct() {
             <label className="block text-sm font-medium mb-1">Description*</label>
             <textarea
               name="description"
-              value={product.description} 
+              value={product.description}
               onChange={handleInputChange}
-              rows="3"
               className="w-full p-2 border rounded-lg"
               placeholder="Enter product description"
             ></textarea>
@@ -80,7 +74,7 @@ export default function AddProduct() {
             <input
               type="text"
               name="category"
-              value={product.category} 
+              value={product.category}
               onChange={handleInputChange}
               className="w-full p-2 border rounded-lg"
               placeholder="Enter product category"
@@ -106,7 +100,7 @@ export default function AddProduct() {
             <input
               type="text"
               name="rating"
-              value={product.rating} 
+              value={product.rating}
               onChange={handleInputChange}
               className="w-full p-2 border rounded-lg"
               placeholder="Enter product rating"

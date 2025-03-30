@@ -1,8 +1,10 @@
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useEffect, useContext, ReactNode } from "react";
 import { useAuth } from "./AuthContext";
 import axios from "axios";
+
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
+// Define types for the product data
 export interface Product {
   id: string;
   productName: string;
@@ -10,7 +12,6 @@ export interface Product {
   description: string;
   rating: string;
   category: string;
-
 }
 
 interface NewProduct {
@@ -19,10 +20,9 @@ interface NewProduct {
   description: string;
   rating: string;
   category: string;
-
 }
 
-interface updateProdcut {
+interface UpdateProduct {
   productName: string;
   price: string;
   description: string;
@@ -34,26 +34,26 @@ interface ProductContextType {
   product: Product[];
   fetchProduct: () => void;
   addProduct: (productData: NewProduct) => void;
-  updateProduct: (id: string, updatedProductData: updateProdcut) => void;
+  updateProduct: (id: string, updatedProductData: UpdateProduct) => void;
   deleteProduct: (id: string) => void;
-  getProductById: (id: string)=>string;
+  getProductById: (id: string) => Promise<Product | null>;
 }
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
+// Define the type for the AuthProvider children
+interface ProductProviderProps {
+  children: ReactNode;
+}
 
-
-export const ProductProvider = ({ children }) => {
+export const ProductProvider = ({ children }: ProductProviderProps) => {
   const { token } = useAuth();
   const [product, setProduct] = useState<Product[]>([]);
 
   const fetchProduct = async () => {
     try {
-
-      
       const res = await axios.get(`${apiUrl}/api/product/allproducts`);
-      console.log(res.data.product);
-      setProduct(res.data.product);
+      setProduct(res.data.product); // Assume `product` is the data array
     } catch (err) {
       console.error("Error fetching products:", err);
     }
@@ -63,23 +63,19 @@ export const ProductProvider = ({ children }) => {
     fetchProduct();
   }, []);
 
-  const getProductById=async (id:string)=>{
-    try{
-
-      const product=await axios.get(`${apiUrl}/api/product/:${id}`);
-      const productdata=product.data;
-      return productdata;
-     
-    }catch(err){
-
-      console.log("error in getting the product data",err);
+  const getProductById = async (id: string): Promise<Product | null> => {
+    try {
+      const res = await axios.get(`${apiUrl}/api/product/${id}`);
+      return res.data || null; // Assuming product data is returned
+    } catch (err) {
+      console.error("Error fetching product by ID:", err);
+      return null; // Return null in case of an error
     }
-  }
-
+  };
 
   const addProduct = async (productData: NewProduct) => {
     try {
-      const response = await axios.post(
+      await axios.post(
         `${apiUrl}/api/product/addProduct`,
         productData,
         {
@@ -89,15 +85,14 @@ export const ProductProvider = ({ children }) => {
           },
         }
       );
-      fetchProduct();
+      fetchProduct(); // Refetch products after adding
     } catch (err) {
       console.error("Error adding product:", err);
     }
   };
 
-  const updateProduct = async (id: string, updatedProductData: updateProdcut) => {
+  const updateProduct = async (id: string, updatedProductData: UpdateProduct) => {
     try {
-      console.log(`updatedProductData in frontend ${JSON.stringify(updatedProductData)}`)
       const response = await axios.patch(
         `${apiUrl}/api/product/updateProduct/${id}`,
         updatedProductData,
@@ -108,10 +103,11 @@ export const ProductProvider = ({ children }) => {
           },
         }
       );
-      if(!response){
-        alert("error in updating the product");
+      if (response.status === 200) {
+        fetchProduct(); // Refetch products after update
+      } else {
+        alert("Error updating the product");
       }
-      fetchProduct();
     } catch (err) {
       console.error("Error updating the product:", err);
     }
@@ -119,16 +115,16 @@ export const ProductProvider = ({ children }) => {
 
   const deleteProduct = async (id: string) => {
     try {
-      console.log("insidet the deltete front")
       const response = await axios.delete(`${apiUrl}/api/product/removeProduct/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      if(response){
-        console.log("product removed sucess")
+      if (response.status === 200) {
+        fetchProduct(); // Refetch products after deletion
+      } else {
+        alert("Error deleting the product");
       }
-      fetchProduct();
     } catch (err) {
       console.error("Error deleting the product:", err);
     }
