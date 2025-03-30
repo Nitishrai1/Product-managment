@@ -29,8 +29,8 @@ export const AddProduct=async(req:any,res:any)=>{
         const response=await prisma.product.create({
             data: {
                 productName: productdata.productName,
-                price: typeof productdata.price === "string" ? parseFloat(productdata.price) : productdata.price, // Converting to float because i am getting the data as string from frontend
-                rating: typeof productdata.rating === "string" ? parseInt(productdata.rating, 10) : productdata.rating, // Converting to integer if it's a string
+                price: typeof productdata.price === "string" ? parseFloat(productdata.price) : productdata.price,
+                rating: typeof productdata.rating === "string" ? parseInt(productdata.rating, 10) : productdata.rating, 
                 description: productdata.description, 
                 category: productdata.category, 
                 createdBy:user_id
