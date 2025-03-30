@@ -20,7 +20,7 @@ export default function AddProduct() {
   
 
   const handleCancel = () => {
-    navigate("/"); // Navigate to the home page or wherever you'd like
+    navigate("/");
   };
 
   const handleSubmit = async (e) => {

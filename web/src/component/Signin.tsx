@@ -5,6 +5,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext" 
 import axios from "axios"
+const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 export default function Signin() {
   const { login } = useAuth() 
@@ -35,7 +36,7 @@ export default function Signin() {
 
   const loginuser=async (formData)=>{
     try{
-        const response=await axios.post("http://localhost:3000/api/admin/signin",
+        const response=await axios.post(`${apiUrl}/api/admin/signin`,
             formData, 
         )
         if(!response){

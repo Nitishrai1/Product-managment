@@ -2,7 +2,7 @@ import { createContext, useState, useEffect, ReactNode, useContext } from "react
 import { useAuth } from "./AuthContext";
 import axios from "axios";
 
-// Define the structure of the user data
+
 interface UserData {
   firstName: string;
   lastName: string;
@@ -34,7 +34,7 @@ export const UserProvider = ({ children }) => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get("/api/admin/profile", {
+      const response = await axios.get(`${apiUrl}/api/admin/profile`, {
         headers: {
           Authorization: `Bearer ${token}`, // Sending token in the headers if needed
         },

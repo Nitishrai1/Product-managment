@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { useProduct } from "../context/ProductContext";
 import ProductCard from "./Card";
 import axios from "axios";
+const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 export function Dashboard() {
   const { product } = useProduct();
@@ -29,7 +30,7 @@ export function Dashboard() {
     const fetchFilteredProducts = async () => {
       try {
         const searchQueryParam = debouncedSearchQuery;
-        const response = await axios.get(`http://localhost:3000/api/product/search?search=${searchQueryParam}`);
+        const response = await axios.get(`${apiUrl}/api/product/search?search=${searchQueryParam}`);
         console.log(response);
 
         if (response.data.products) {

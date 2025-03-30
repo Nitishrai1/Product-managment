@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect, useContext, ReactNode } from "react";
 import { useAuth } from "./AuthContext";
 import axios from "axios";
+const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 export interface Product {
   id: string;
@@ -50,7 +51,7 @@ export const ProductProvider = ({ children }) => {
     try {
 
       
-      const res = await axios.get(`http://localhost:3000/api/product/allproducts`);
+      const res = await axios.get(`${apiUrl}/api/product/allproducts`);
       console.log(res.data.product);
       setProduct(res.data.product);
     } catch (err) {
@@ -65,7 +66,7 @@ export const ProductProvider = ({ children }) => {
   const getProductById=async (id:string)=>{
     try{
 
-      const product=await axios.get("/api/product/:id");
+      const product=await axios.get(`${apiUrl}/api/product/:id`);
       const productdata=product.data;
       return productdata;
      
@@ -79,7 +80,7 @@ export const ProductProvider = ({ children }) => {
   const addProduct = async (productData: NewProduct) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/product/addProduct",
+        `${apiUrl}/api/product/addProduct`,
         productData,
         {
           headers: {
@@ -98,7 +99,7 @@ export const ProductProvider = ({ children }) => {
     try {
       console.log(`updatedProductData in frontend ${JSON.stringify(updatedProductData)}`)
       const response = await axios.patch(
-        `http://localhost:3000/api/product/updateProduct/${id}`,
+        `${apiUrl}/api/product/updateProduct/${id}`,
         updatedProductData,
         {
           headers: {
@@ -119,7 +120,7 @@ export const ProductProvider = ({ children }) => {
   const deleteProduct = async (id: string) => {
     try {
       console.log("insidet the deltete front")
-      const response = await axios.delete(`http://localhost:3000/api/product/removeProduct/${id}`, {
+      const response = await axios.delete(`${apiUrl}/api/product/removeProduct/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
