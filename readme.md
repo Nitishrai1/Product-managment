@@ -27,4 +27,21 @@ A comprehensive product management system built with modern web technologies.
    ```bash
    git clone [https://github.com/Nitishrai1/Product-managment.git](https://github.com/Nitishrai1/Product-managment.git)
    cd Product-managment
+
+### backend
+ ``` bash
+ cd backend
+
+ npm i
+ npm run dev
+
+ ```
+
+### frontend
+```bash
+   cd web
+   npm i
+   npm run dev
+   
+   ```
    
