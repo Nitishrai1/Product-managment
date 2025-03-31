@@ -95,3 +95,27 @@ export const DeleteAccount=async(req:any,res:any)=>{
 
     }
 }
+
+export const ProfileData=async(req:any,res:any)=>{
+    const user_id=req.params.id;
+    try{
+        console.log("inside the profiledata function")
+
+        const response=await prisma.user.findUnique({
+            where:{
+                user_id:user_id
+            },
+            
+        });
+
+        if(!response){
+            return res.status(404).json({msg:"user not found"})
+            
+        }
+        return res.status(200).json({msg:"user data ",response});
+
+    }catch(err){
+        return res.status(500).json({msg:"Internal server error"});
+
+    }
+}
