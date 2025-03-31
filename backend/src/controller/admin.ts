@@ -97,7 +97,7 @@ export const DeleteAccount=async(req:any,res:any)=>{
 }
 
 export const ProfileData=async(req:any,res:any)=>{
-    const user_id=req.params.id;
+    const user_id=req.user_id;
     try{
         console.log("inside the profiledata function")
 
