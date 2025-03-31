@@ -115,7 +115,7 @@ export const ProfileData=async(req:any,res:any)=>{
         return res.status(200).json({msg:"user data ",response});
 
     }catch(err){
-        return res.status(500).json({msg:"Internal server error"});
+        return res.status(500).json({msg:"Internal server error",err});
 
     }
 }
