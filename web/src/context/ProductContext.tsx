@@ -51,8 +51,10 @@ export const ProductProvider = ({ children }: ProductProviderProps) => {
   const fetchProduct = async () => {
     try {
       const res = await axios.get(`${apiUrl}/api/product/allproducts`);
-      console.log(res.data.product)
-      setProduct(res.data.product); // Assume `product` is the data array
+      // console.log(`in context`,res.data)
+      console.log(`p`,res.data.product);
+      setProduct(res.data.product); 
+      console.log(`in context p ${product}`)
     } catch (err) {
       console.error("Error fetching products:", err);
     }

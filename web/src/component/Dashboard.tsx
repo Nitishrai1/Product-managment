@@ -20,7 +20,7 @@ const apiUrl = import.meta.env.VITE_BACKEND_URL;
 export function Dashboard() {
   const { logout } = useAuth();
   const { product } = useProduct(); // Fetch all products from context
-  const [filteredProduct, setFilteredProduct] = useState<Product[]>(product); // Initialize with all products
+  const [filteredProduct, setFilteredProduct] = useState<Product[]>(); // Initialize with all products
   const [categoryFilter, setCategoryFilter] = useState<string>("");
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(1000);
@@ -28,8 +28,13 @@ export function Dashboard() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>("");
   const navigate = useNavigate();
-  
 
+  // console.log(`p ${JSON.stringify(product)}`)
+  useEffect(() => {
+    setFilteredProduct(product);
+  }, [product]);
+  
+  // console.log(`initil product is ${filteredProduct}`)
 
   // Debounce search query to optimize the API call
   useEffect(() => {
