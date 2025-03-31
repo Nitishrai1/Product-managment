@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "npx prisma generate --schema=src/prisma/schema.prisma && tsc -b && node dist/index.js"
+    "dev": "npx prisma generate --schema=src/prisma/schema.prisma && tsc -b && node dist/index.js",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
