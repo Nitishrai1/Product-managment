@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(!!token);
 
   const login = (token: string) => {
-    localStorage.setItem("token", `Bearer ${token}`);
+    localStorage.setItem("token", `${token}`);
     setToken(token);
     setIsAuthenticated(true);
   };
