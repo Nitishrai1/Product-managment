@@ -3,9 +3,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import ProductCard from "./Card";
 import axios from "axios";
-import { useProduct } from "../context/ProductContext";
 
-// Define types for Product
 interface Product {
   product_id: string;
   productName: string;
@@ -13,31 +11,36 @@ interface Product {
   description: string;
   rating: string;
   category: string;
-  
 }
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
 export function Dashboard() {
   const { logout } = useAuth();
-  const { product } = useProduct(); // Fetch all products from context
-  const [filteredProduct, setFilteredProduct] = useState<Product[]>(); // Initialize with all products
+  const navigate = useNavigate();
+
+  const [filteredProduct, setFilteredProduct] = useState<Product[]>([]); 
   const [categoryFilter, setCategoryFilter] = useState<string>("");
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(1000);
   const [ratingFilter, setRatingFilter] = useState<number>(0);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>("");
-  const navigate = useNavigate();
 
+  const fetchProducts = async () => {
+    try {
+      const res = await axios.get(`${apiUrl}/api/product/allproducts`);
+      console.log("Fetched products:", JSON.stringify(res.data.product, null, 2));
+      setFilteredProduct(res.data.product);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
 
   useEffect(() => {
-    setFilteredProduct(product);
-  }, [product]);
-  
- 
+    fetchProducts();
+  }, []);
 
-  // Debounce search query to optimize the API call
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearchQuery(searchQuery);
@@ -49,11 +52,8 @@ export function Dashboard() {
   useEffect(() => {
     const fetchFilteredProducts = async () => {
       try {
-        
-        const searchQueryParam = debouncedSearchQuery || ""; 
-        const response = await axios.get(
-          `${apiUrl}/api/product/search?search=${searchQueryParam}`
-        );
+        const searchQueryParam = debouncedSearchQuery || "";
+        const response = await axios.get(`${apiUrl}/api/product/search?search=${searchQueryParam}`);
 
         if (response.data.products) {
           setFilteredProduct(response.data.products);
@@ -66,21 +66,18 @@ export function Dashboard() {
     if (debouncedSearchQuery) {
       fetchFilteredProducts();
     } else {
-      setFilteredProduct(product); 
+      fetchProducts(); 
     }
   }, [debouncedSearchQuery]);
 
   const handleEditProduct = (product_id: string) => {
-    navigate("/EditProduct", {
-      state: { id: product_id.toString() },
-    });
+    navigate("/EditProduct", { state: { id: product_id } });
   };
 
   const handleAddProduct = () => {
     navigate("/Addproduct");
   };
 
-  // Handle logout
   const handleLogout = () => {
     logout();
   };
@@ -157,10 +154,9 @@ export function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredProduct && filteredProduct.length > 0 ? (
+        {filteredProduct.length > 0 ? (
           filteredProduct.map((item) => (
-            <ProductCard key={item.product_id} product={item} onEdit={(id) => handleEditProduct(id.toString())} />
-
+            <ProductCard key={item.product_id} product={item} onEdit={() => handleEditProduct(item.product_id)} />
           ))
         ) : (
           <p className="col-span-3 text-center text-gray-500">No products found</p>
