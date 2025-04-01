@@ -30,12 +30,12 @@ export function Dashboard() {
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>("");
   const navigate = useNavigate();
 
-  // console.log(`p ${JSON.stringify(product)}`)
+
   useEffect(() => {
     setFilteredProduct(product);
   }, [product]);
   
-  // console.log(`initil product is ${filteredProduct}`)
+ 
 
   // Debounce search query to optimize the API call
   useEffect(() => {
