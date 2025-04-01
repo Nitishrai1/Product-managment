@@ -9,10 +9,10 @@ import { useProduct } from "../context/ProductContext";
 interface Product {
   product_id: string;
   productName: string;
-  description: string;
-  category: string;
   price: string;
+  description: string;
   rating: string;
+  category: string;
   
 }
 

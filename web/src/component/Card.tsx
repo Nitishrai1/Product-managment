@@ -9,7 +9,7 @@ interface Product {
   category: string
   price: number
   rating: number
-  createdAt: string
+  
 }
 
 interface ProductCardProps {
@@ -25,13 +25,13 @@ export default function ProductCard({ product, onEdit }: ProductCardProps) {
     category = "Uncategorized",
     price = 0,
     rating = 0,
-    createdAt,
+    
   } = product
 
   const { deleteProduct } = useProduct()
 
   // Format the date to a readable format
-  const formattedDate = new Date(createdAt).toLocaleDateString("en-US", {
+  const formattedDate = new Date().toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
     day: "numeric",
