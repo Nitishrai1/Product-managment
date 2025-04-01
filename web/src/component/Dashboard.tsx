@@ -13,6 +13,7 @@ interface Product {
   category: string;
   price: string;
   rating: string;
+  
 }
 
 const apiUrl = import.meta.env.VITE_BACKEND_URL;
@@ -71,7 +72,7 @@ export function Dashboard() {
 
   const handleEditProduct = (product_id: string) => {
     navigate("/EditProduct", {
-      state: { id: product_id },
+      state: { id: product_id.toString() },
     });
   };
 
@@ -158,11 +159,8 @@ export function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredProduct && filteredProduct.length > 0 ? (
           filteredProduct.map((item) => (
-            <ProductCard
-              key={item.product_id}
-              product={item}
-              onEdit={handleEditProduct}
-            />
+            <ProductCard key={item.product_id} product={item} onEdit={(id) => handleEditProduct(id.toString())} />
+
           ))
         ) : (
           <p className="col-span-3 text-center text-gray-500">No products found</p>
